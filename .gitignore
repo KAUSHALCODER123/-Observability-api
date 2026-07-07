@@ -13,3 +13,8 @@ voice_final.py
 DEMO_SCRIPT.md
 *.mp4
 *.wav
+
+# local demo runbook
+LIVE_DEMO.md
+rid.txt
+srv.pid

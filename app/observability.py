@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import sys
 import time
 import uuid
@@ -74,13 +75,22 @@ class JsonLogFormatter(logging.Formatter):
 
 
 def configure_logging(level: str = "INFO") -> logging.Logger:
-    """Install the JSON formatter on the root logger and return the app logger."""
+    """Install the JSON formatter on the root logger and return the app logger.
+
+    Logs always go to stdout; if LOG_FILE is set, they are also appended to
+    that file so tools like grep can query request history.
+    """
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(JsonLogFormatter())
 
     root = logging.getLogger()
     root.handlers.clear()
     root.addHandler(handler)
+    log_file = os.environ.get("LOG_FILE")
+    if log_file:
+        file_handler = logging.FileHandler(log_file, encoding="utf-8")
+        file_handler.setFormatter(JsonLogFormatter())
+        root.addHandler(file_handler)
     root.setLevel(level)
 
     # Quiet uvicorn's own access logs -- our middleware emits richer ones.
