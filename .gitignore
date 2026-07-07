@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+# demo-video generation artifacts (not part of the service)
+video_build/
+server.log
+record_demo.py
+DEMO_SCRIPT.md
+*.mp4
